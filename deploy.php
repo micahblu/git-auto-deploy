@@ -8,10 +8,9 @@
  * 
  */
 
-error_reporting(true);
-ini_set('display_errors', 1);
 
-define('SECRET', 'Kratos22!');
+define('SECRET', '');
+
 
 if(!$_REQUEST['payload']) {
 	die('Bad request: No payload');
@@ -38,10 +37,10 @@ $payload = json_decode($_REQUEST['payload']);
 
 chdir( $repoMap[$payload->repository->name] );
 
-exec( 'whoami; pwd; git pull 2>&1', $output );
+exec( 'whoami; su ' . USER . ' pwd; git pull 2>&1', $output );
 
 $message = '';
-foreach($line as $output){
+foreach($output as $line){
 	$message .=  $line . "\n";
 }
 
