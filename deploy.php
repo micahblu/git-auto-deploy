@@ -8,20 +8,27 @@
  * 
  */
 
-
-define('SECRET', '');
-
+/**
+ * EMAIL used for notificaion 
+ */
+define('EMAIL', '');
 
 if(!$_REQUEST['payload']) {
 	die('Bad request: No payload');
 }
 
 $repoMap = array(
-	"[reponame]" => "[server_repo_path]"
+	"[reponame]" => array(
+		"path" => "[server_repo_path]",
+		"secret" => "[repo_webhook_secret"
+	)
 );
 
+$payload = json_decode($_REQUEST['payload']);
+
+
 // If as secret is set, compare hashes
-if( defined( SECRET ) ){
+if( !empty($repoMap[$payload->repository->name]['secret']) ){
 	$body = file_get_contents('php://input');
 
 	$localSignature = hash_hmac('sha1', $body, $secret);
@@ -33,7 +40,6 @@ if( defined( SECRET ) ){
 	}
 }
 
-$payload = json_decode($_REQUEST['payload']);
 
 chdir( $repoMap[$payload->repository->name] );
 
@@ -44,5 +50,5 @@ foreach($output as $line){
 	$message .=  $line . "\n";
 }
 
-mail("micahblu@gmail.com", $payload->repository->name . " deployed", $message);
+mail(EMAIL, $payload->repository->name . " deployed", $message);
 print_r($output);
