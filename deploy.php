@@ -17,7 +17,7 @@ if(!$_REQUEST['payload']) {
 }
 
 $repoMap = array(
-	"wp-foundation" => "/var/www/vhosts/default/subdomains/dev/wp-foundation/wp-content/themes/wp-foundation/"
+	"[reponame]" => "[server_repo_path]"
 );
 
 // If as secret is set, compare hashes
@@ -37,7 +37,7 @@ $payload = json_decode($_REQUEST['payload']);
 
 chdir( $repoMap[$payload->repository->name] );
 
-exec( 'whoami; su ' . USER . ' pwd; git pull 2>&1', $output );
+exec( 'whoami; git pull 2>&1', $output );
 
 $message = '';
 foreach($output as $line){
