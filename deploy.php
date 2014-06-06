@@ -8,27 +8,19 @@
  * 
  */
 
-/**
- * EMAIL used for notificaion 
- */
-define('EMAIL', '');
 
 if(!$_REQUEST['payload']) {
 	die('Bad request: No payload');
 }
 
-$repoMap = array(
-	"[reponame]" => array(
-		"path" => "[server_repo_path]",
-		"secret" => "[repo_webhook_secret"
-	)
-);
+$config = json_decode(file_get_contents("config.json"));
 
 $payload = json_decode($_REQUEST['payload']);
 
+$repo_name = $payload->repository->name;
 
 // If as secret is set, compare hashes
-if( !empty($repoMap[$payload->repository->name]['secret']) ){
+if( !empty( $config->map->{$repo_name}->secret )){
 	$body = file_get_contents('php://input');
 
 	$localSignature = hash_hmac('sha1', $body, $secret);
@@ -40,7 +32,6 @@ if( !empty($repoMap[$payload->repository->name]['secret']) ){
 	}
 }
 
-
 chdir( $repoMap[$payload->repository->name] );
 
 exec( 'whoami; git pull 2>&1', $output );
@@ -50,5 +41,5 @@ foreach($output as $line){
 	$message .=  $line . "\n";
 }
 
-mail(EMAIL, $payload->repository->name . " deployed", $message);
+mail($config->email, $payload->repository->name . " deployed", $message);
 print_r($output);
