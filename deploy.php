@@ -23,7 +23,7 @@ $repo_name = $payload->repository->name;
 if( !empty( $config->map->{$repo_name}->secret )){
 	$body = file_get_contents('php://input');
 
-	$localSignature = hash_hmac('sha1', $body, $secret);
+	$localSignature = hash_hmac('sha1', $body, $config->map->{$repo_name}->secret);
 
 	$remoteSignature = str_replace("sha1=", "", $_SERVER['HTTP_X_HUB_SIGNATURE']);
 
@@ -32,14 +32,14 @@ if( !empty( $config->map->{$repo_name}->secret )){
 	}
 }
 
-chdir( $repoMap[$payload->repository->name] );
+chdir($repoMap[$repo_name]);
 
 exec( 'whoami; git pull 2>&1', $output );
-
+	
 $message = '';
 foreach($output as $line){
 	$message .=  $line . "\n";
 }
 
-mail($config->email, $payload->repository->name . " deployed", $message);
+mail($config->email, $repo_name . " deployed", $message);
 print_r($output);

@@ -1,7 +1,7 @@
 {
 	"email": "",
 	"map": {
-		"wp-foundation": {
+		"[reponame]": {
 			"path": "",
 			"secret": "" 
 		}
