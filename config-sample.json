@@ -1,9 +1,8 @@
 {
 	"email": "",
-	"map": {
-		"[reponame]": {
-			"path": "",
-			"secret": "" 
-		}
-	}
+	"repos": [{
+		"name": "",
+		"path": "",
+		"secret": "" 
+	}]
 }

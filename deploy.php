@@ -19,11 +19,13 @@ $payload = json_decode($_REQUEST['payload']);
 
 $repo_name = $payload->repository->name;
 
+print_r($config);
+
 // If as secret is set, compare hashes
-if( !empty( $config->map->{$repo_name}->secret )){
+if( !empty( $config->repos->{$repo_name}->secret )){
 	$body = file_get_contents('php://input');
 
-	$localSignature = hash_hmac('sha1', $body, $config->map->{$repo_name}->secret);
+	$localSignature = hash_hmac('sha1', $body, $config->repos->{$repo_name}->secret);
 
 	$remoteSignature = str_replace("sha1=", "", $_SERVER['HTTP_X_HUB_SIGNATURE']);
 
