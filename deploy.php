@@ -41,4 +41,6 @@ foreach($output as $line){
 	$message .=  $line . "\n";
 }
 
-mail($config->email, $repo_name . " deployed", $message);
+if($config->sendEmail === true){
+	mail($config->email, $repo_name . " deployed", $message);
+}
