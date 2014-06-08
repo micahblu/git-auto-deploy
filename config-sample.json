@@ -1,6 +1,6 @@
 {
 	"email": "",
-	"sendEmail": "true",
+	"sendEmail": true,
 	
 	"repos": [
 		{

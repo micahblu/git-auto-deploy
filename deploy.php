@@ -27,7 +27,7 @@ function findBy($prop, $withValue, $assoc){
 		}
 	}
 }
-
+ 
 $repo = findBy("name", $repo_name, $config->repos);
 
 // If as secret is set, compare hashes
@@ -43,15 +43,19 @@ if( !empty( $repo->secret )){
 	}
 }
 
+// cd into the repo path 
 chdir($repo->path);
 
+// Execute git commands
 exec( 'pwd; whoami; git pull 2>&1', $output );
-	
+
+// Record results for email
 $message = '';
 foreach($output as $line){
 	$message .=  $line . "\n";
 }
 
+// Optionally send email
 if($config->sendEmail === true){
 	mail($config->email, $repo_name . " deployed", $message);
 }
