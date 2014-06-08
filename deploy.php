@@ -19,8 +19,6 @@ $payload = json_decode($_REQUEST['payload']);
 
 $repo_name = $payload->repository->name;
 
-print_r($config);
-
 // If as secret is set, compare hashes
 if( !empty( $config->repos->{$repo_name}->secret )){
 	$body = file_get_contents('php://input');
@@ -44,4 +42,3 @@ foreach($output as $line){
 }
 
 mail($config->email, $repo_name . " deployed", $message);
-print_r($output);
