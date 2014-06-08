@@ -8,7 +8,6 @@
  * 
  */
 
-
 if(!$_REQUEST['payload']) {
 	die('Bad request: No payload');
 }
@@ -19,11 +18,23 @@ $payload = json_decode($_REQUEST['payload']);
 
 $repo_name = $payload->repository->name;
 
+function findBy($prop, $withValue, $assoc){
+	for($i = 0, $j = count($assoc); $i < $j; $i++){
+		foreach($assoc[$i] as $field => $value){
+			if($prop == $field && $value == $withValue){
+				return $assoc[$i];
+			}
+		}
+	}
+}
+
+$repo = findBy("name", $repo_name, $config->repos);
+
 // If as secret is set, compare hashes
-if( !empty( $config->repos->{$repo_name}->secret )){
+if( !empty( $repo->secret )){
 	$body = file_get_contents('php://input');
 
-	$localSignature = hash_hmac('sha1', $body, $config->repos->{$repo_name}->secret);
+	$localSignature = hash_hmac('sha1', $body, $repo->secret);
 
 	$remoteSignature = str_replace("sha1=", "", $_SERVER['HTTP_X_HUB_SIGNATURE']);
 
@@ -32,9 +43,9 @@ if( !empty( $config->repos->{$repo_name}->secret )){
 	}
 }
 
-chdir($repoMap[$repo_name]);
+chdir($repo->path);
 
-exec( 'whoami; git pull 2>&1', $output );
+exec( 'pwd; whoami; git pull 2>&1', $output );
 	
 $message = '';
 foreach($output as $line){
