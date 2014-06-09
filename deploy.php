@@ -18,7 +18,7 @@ $payload = json_decode($_REQUEST['payload']);
 
 $repo_name = $payload->repository->name;
 
-function findBy($prop, $withValue, $assoc){
+function findBy($prop, $withValue, $assoc{
 	for($i = 0, $j = count($assoc); $i < $j; $i++){
 		foreach($assoc[$i] as $field => $value){
 			if($prop == $field && $value == $withValue){
@@ -47,7 +47,8 @@ if( !empty( $repo->secret )){
 chdir($repo->path);
 
 // Execute git commands
-exec( 'pwd; whoami; git pull 2>&1', $output );
+//exec( 'pwd; whoami; git pull 2>&1', $output );
+exec('./build.sh $repo->name $repo->path 2>&1', $output);
 
 // Record results for email
 $message = '';
