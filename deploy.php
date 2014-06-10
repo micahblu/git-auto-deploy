@@ -4,7 +4,7 @@
  * Automatically Deploy your Github Projects
  * 
  * @author  micahblu <github.com/micahblu>
- * @version  0.1
+ * @version  0.2
  * 
  */
 
@@ -18,7 +18,7 @@ $payload = json_decode($_REQUEST['payload']);
 
 $repo_name = $payload->repository->name;
 
-function findBy($prop, $withValue, $assoc{
+function findBy($prop, $withValue, $assoc){
 	for($i = 0, $j = count($assoc); $i < $j; $i++){
 		foreach($assoc[$i] as $field => $value){
 			if($prop == $field && $value == $withValue){
@@ -27,7 +27,7 @@ function findBy($prop, $withValue, $assoc{
 		}
 	}
 }
- 
+
 $repo = findBy("name", $repo_name, $config->repos);
 
 // If as secret is set, compare hashes
