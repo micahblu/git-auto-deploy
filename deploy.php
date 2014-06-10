@@ -60,3 +60,6 @@ foreach($output as $line){
 if($config->sendEmail === true){
 	mail($config->email, $repo_name . " deployed", $message);
 }
+
+// Let's dump the output for logs 
+print_r($output);
