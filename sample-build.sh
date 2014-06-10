@@ -1,7 +1,7 @@
 #!/bin/bash
 
-REPO_NAME = $1
-REPO_PATH = $2
+REPO_NAME=$1
+REPO_PATH=$2
 
 case "$REPO_NAME" in
 "wp-foundation")
