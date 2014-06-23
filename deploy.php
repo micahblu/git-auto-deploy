@@ -47,8 +47,7 @@ if( !empty( $repo->secret )){
 chdir($repo->path);
 
 // Execute git commands
-//exec( 'pwd; whoami; git pull 2>&1', $output );
-exec('./build.sh $repo->name $repo->path 2>&1', $output);
+exec('./build.sh 2>&1', $output);
 
 // Record results for email
 $message = '';
