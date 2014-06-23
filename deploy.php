@@ -4,7 +4,7 @@
  * Automatically Deploy your Github Projects
  * 
  * @author  micahblu <github.com/micahblu>
- * @version  0.2
+ * @version  0.3
  * 
  */
 
@@ -18,23 +18,11 @@ $payload = json_decode($_REQUEST['payload']);
 
 $repo_name = $payload->repository->name;
 
-function findBy($prop, $withValue, $assoc){
-	for($i = 0, $j = count($assoc); $i < $j; $i++){
-		foreach($assoc[$i] as $field => $value){
-			if($prop == $field && $value == $withValue){
-				return $assoc[$i];
-			}
-		}
-	}
-}
-
-$repo = findBy("name", $repo_name, $config->repos);
-
 // If as secret is set, compare hashes
-if( !empty( $repo->secret )){
+if( !empty( $config->secret )){
 	$body = file_get_contents('php://input');
 
-	$localSignature = hash_hmac('sha1', $body, $repo->secret);
+	$localSignature = hash_hmac('sha1', $body, $config->secret);
 
 	$remoteSignature = str_replace("sha1=", "", $_SERVER['HTTP_X_HUB_SIGNATURE']);
 
@@ -42,9 +30,6 @@ if( !empty( $repo->secret )){
 		die('Bad request');
 	}
 }
-
-// cd into the repo path 
-chdir($repo->path);
 
 // Execute git commands
 exec('./build.sh 2>&1', $output);

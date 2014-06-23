@@ -22,9 +22,9 @@ cp wp-config.php ../.repo.new/
 # make the switch!
 cd ../
 
-mv REPO_NAME .repo.old
+mv $REPO_NAME .repo.old
 
-mv .repo.new REPO_NAME
+mv .repo.new $REPO_NAME
 
 # Go check to make sure everything is kosher, then remove the old one
 rm -rf .repo.old

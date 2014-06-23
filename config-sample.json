@@ -2,11 +2,5 @@
 	"email": "",
 	"sendEmail": true,
 	
-	"repos": [
-		{
-			"name": "",
-			"path": "",
-			"secret": ""
-		}
-	]
+	"secret": ""
 }
